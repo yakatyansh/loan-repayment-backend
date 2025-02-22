@@ -1,20 +1,9 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from datetime import datetime
-from typing import List
+from models import LoanRequest
+from services import generate_schedule
 
 app = FastAPI()
 
-class LoanRequest(BaseModel):
-    disbursement_date: datetime
-    principal: float
-    tenure: int
-    interest_rate: float
-    emi_frequency: int
-    moratorium_period: int
-
-def calculate_emi(principal, rate, tenure):
-    monthly_rate = (rate/100) / 12
-    emi = (principal * monthly_rate * (1 + monthly_rate) ** tenure) / ((1 + monthly_rate) ** tenure - 1)
-    return round(emi, 2)
-
+@app.post("/generate-schedule/")
+async def generate_loan_schedule(loan_data: LoanRequest):
+    return {"repayment_schedule": generate_schedule(loan_data)}
