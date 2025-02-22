@@ -1,9 +1,13 @@
 from fastapi import FastAPI
-from models import LoanRequest
-from services import generate_schedule
 
 app = FastAPI()
 
-@app.post("/generate-schedule/")
-async def generate_loan_schedule(loan_data: LoanRequest):
-    return {"repayment_schedule": generate_schedule(loan_data)}
+@app.get("/")
+def home():
+    return {"message": "Loan Repayment API is working!"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
+# Other API endpoints go here
