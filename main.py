@@ -8,9 +8,9 @@ app = FastAPI()
 # ✅ CORS Middleware Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://loan-repayment-frontend.vercel.app/"],  
+    allow_origins=["https://loan-repayment-frontend.vercel.app"], 
     allow_credentials=True,
-    allow_methods=["*"],  
+    allow_methods=["*"], 
     allow_headers=["*"],  
 )
 
@@ -25,3 +25,7 @@ def health_check():
 @app.post("/schedule")
 def get_schedule(data: LoanRequest):
     return generate_schedule(data)  
+
+@app.options("/{full_path:path}")
+async def preflight_handler():
+    return {"message": "CORS preflight request successful"}
